@@ -105,14 +105,14 @@ PACK(struct PxxUartPulsesData {
 #define MULTIMODULE_BAUDRATE         100000
 #define MULTIMODULE_PERIOD           7 /*ms*/
 
-#if !defined(INTMODULE_USART) || !defined(EXTMODULE_USART)
+#if !defined(INTMODULE_USART) || !defined(EXTMODULE_USART) || defined(MODULE_R9M_FULLSIZE)
 /* PXX uses 20 bytes (as of Rev 1.1 document) with 8 changes per byte + stop bit ~= 162 max pulses */
 /* DSM2 uses 2 header + 12 channel bytes, with max 10 changes (8n2) per byte + 16 bits trailer ~= 156 max pulses */
 /* Multimodule uses 3 bytes header + 22 channel bytes with max 11 changes per byte (8e2) + 16 bits trailer ~= 291 max pulses */
 /* Multimodule reuses some of the DSM2 function and structs since the protocols are similar enough */
 /* sbus is 1 byte header, 22 channel bytes (11bit * 16ch) + 1 byte flags */
 
-#if defined(PXX_FREQUENCY_HIGH)
+#if defined(PXX_FREQUENCY_HIGH) && !defined(MODULE_R9M_FULLSIZE)
 #error "Pulses array needs to be increased (PXX_FREQUENCY=HIGH)"
 #endif
 
@@ -137,7 +137,7 @@ union ModulePulsesData {
 #endif
 #if defined(PPM_PIN_SERIAL)
   PxxSerialPulsesData pxx;
-#elif !defined(INTMODULE_USART) || !defined(EXTMODULE_USART)
+#elif !defined(INTMODULE_USART) || !defined(EXTMODULE_USART) || defined(MODULE_R9M_FULLSIZE)
   PxxTimerPulsesData pxx;
 #endif
 
