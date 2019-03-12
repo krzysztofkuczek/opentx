@@ -47,14 +47,17 @@ template<class T> struct PpmPulsesData {
 #if defined(PXX_FREQUENCY_HIGH)
 #define EXTMODULE_USART_PXX_BAUDRATE  420000
 #define INTMODULE_USART_PXX_BAUDRATE  450000
-#define PXX_PERIOD                    4/*ms*/
+#define PXX_PERIOD_USART              4/*ms*/
 #else
 #define EXTMODULE_USART_PXX_BAUDRATE  115200
 #define INTMODULE_USART_PXX_BAUDRATE  115200
-#define PXX_PERIOD                    9/*ms*/
+#define PXX_PERIOD_USART              9/*ms*/
 #endif
 
-#define PXX_PERIOD_HALF_US            (PXX_PERIOD * 2000)
+#define PXX_PERIOD_PULSES             9/*ms*/
+#define PXX_PERIOD(port)              (IS_UART_MODULE(port) ? PXX_PERIOD_USART : PXX_PERIOD_PULSES)
+#define PXX_PERIOD_HALF_US(port)      (PXX_PERIOD(port) * 2000)
+
 
 #if defined(PPM_PIN_SERIAL)
 PACK(struct PxxSerialPulsesData {
